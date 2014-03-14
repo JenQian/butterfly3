@@ -4,34 +4,55 @@ package student;
 import java.util.List;
 import danaus.*;
 
-public class Butterfly extends AbstractButterfly {
+public class Butterfly extends AbstractButterfly 
+{
+	private Direction direction = danaus.Direction.E;
 	
 	 public @Override TileState[][] learn() 
 	 {
 		 refreshState();
 		try
 		{
-			fly_continuous(danaus.Direction.E, danaus.Speed.NORMAL);
+			fly_continuous(danaus.Speed.NORMAL);
 		}
 		catch (danaus.CliffCollisionException e) 
 		{
-			for (;;)
+			switch (getDirection())
 			{
-				fly_continuous(danaus.Direction.S, danaus.Speed.NORMAL);
+				case E:
+					setDirection(danaus.Direction.S);
+					fly_continuous(danaus.Speed.NORMAL);
+				case S:
+					setDirection(danaus.Direction.W);
+					fly_continuous(danaus.Speed.NORMAL);
+					
+				default:
+					break; 
+			
 			}
+			
 		}
 		return null;
 	}
 	 
 	 /* ----------- Helper Methods ------------------------ */
-	 private void fly_continuous (Direction heading, Speed s)
+	 private void fly_continuous (Speed s)
 	 {
 		 for (;;)
 		 {
-			 fly(heading, s);
+			 fly(getDirection(), s);
 		 }
 	 }
 	 
+	 public Direction getDirection() {
+		 return direction;
+	 }
+
+	 public void setDirection(Direction direction) {
+		 this.direction = direction;
+	 }
+	 
+	 /* ----------------------------------------------- */
 	
 	public @Override void run(List<Long> flowerIds) {
 		// DO NOT IMPLEMENT FOR A3
@@ -51,4 +72,5 @@ public class Butterfly extends AbstractButterfly {
 		// DO NOT IMPLEMENT FOR A3
 		return null;
 	}
+
 }
