@@ -5,13 +5,17 @@ import java.util.List;
 import danaus.*;
 
 public class Butterfly extends AbstractButterfly {
-	/**
-	 * Boustrophedonically search the map. 
-	 */
-	public @Override TileState[][] learn() {
-		// TODO: implement
+	
+	 public @Override TileState[][] learn() {
+		for (int i=0; i<100; i++) {
+			try{
+				 fly(danaus.Direction.E, danaus.Speed.NORMAL);
+			}
+			catch (danaus.CliffCollisionException e) {}
+			}
 		return null;
 	}
+	 
 	
 	public @Override void run(List<Long> flowerIds) {
 		// DO NOT IMPLEMENT FOR A3
