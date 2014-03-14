@@ -8,6 +8,7 @@ public class Butterfly extends AbstractButterfly {
 	
 	 public @Override TileState[][] learn() 
 	 {
+		 refreshState();
 		try
 		{
 			fly_continuous(danaus.Direction.E, danaus.Speed.NORMAL);
