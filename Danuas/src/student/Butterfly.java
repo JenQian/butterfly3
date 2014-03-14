@@ -6,29 +6,40 @@ import danaus.*;
 
 public class Butterfly extends AbstractButterfly 
 {
-	private Direction direction;
+	private Direction direction = danaus.Direction.E;
 	
 	 public @Override TileState[][] learn() 
 	 {
 		try
 		{
-			setDirection(danaus.Direction.E);
-			fly_continuous(getDirection(), danaus.Speed.NORMAL);
+			fly_continuous(danaus.Speed.NORMAL);
 		}
 		catch (danaus.CliffCollisionException e) 
 		{
-	
-			fly_continuous(danaus.Direction.S, danaus.Speed.NORMAL);
+			switch (getDirection())
+			{
+				case E:
+					setDirection(danaus.Direction.S);
+					fly_continuous(danaus.Speed.NORMAL);
+				case S:
+					setDirection(danaus.Direction.W);
+					fly_continuous(danaus.Speed.NORMAL);
+					
+				default:
+					break; 
+			
+			}
+			
 		}
 		return null;
 	}
 	 
 	 /* ----------- Helper Methods ------------------------ */
-	 private void fly_continuous (Direction heading, Speed s)
+	 private void fly_continuous (Speed s)
 	 {
 		 for (;;)
 		 {
-			 fly(heading, s);
+			 fly(getDirection(), s);
 		 }
 	 }
 	 
