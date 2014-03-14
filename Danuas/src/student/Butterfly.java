@@ -10,28 +10,10 @@ public class Butterfly extends AbstractButterfly
 	
 	 public @Override TileState[][] learn() 
 	 {
-		try
-		{
-			fly_continuous(danaus.Speed.NORMAL);
-		}
-		catch (danaus.CliffCollisionException e) 
-		{
-			switch (getDirection())
-			{
-				case E:
-					setDirection(danaus.Direction.S);
-					fly_continuous(danaus.Speed.NORMAL);
-				case S:
-					setDirection(danaus.Direction.W);
-					fly_continuous(danaus.Speed.NORMAL);
-					
-				default:
-					break; 
-			
-			}
-			
-		}
+		fly_continuous(danaus.Speed.NORMAL);
+
 		return null;
+
 	}
 	 
 	 /* ----------- Helper Methods ------------------------ */
@@ -39,7 +21,29 @@ public class Butterfly extends AbstractButterfly
 	 {
 		 for (;;)
 		 {
-			 fly(getDirection(), s);
+			 try
+			 {
+			 	fly(getDirection(), s);
+			 }
+			 catch (danaus.CliffCollisionException e) 
+			 {
+				switch (getDirection())
+				{
+					case E:
+						setDirection(danaus.Direction.S);
+						fly_continuous(danaus.Speed.NORMAL);
+					case S:
+						setDirection(danaus.Direction.W);
+						fly_continuous(danaus.Speed.NORMAL);
+					case W:
+						setDirection(danaus.Direction.S);
+						fly_continuous(danaus.Speed.NORMAL);
+						
+					default:
+						break; 
+				
+				}
+			 }
 		 }
 	 }
 	 
