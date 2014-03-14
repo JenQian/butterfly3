@@ -6,15 +6,30 @@ import danaus.*;
 
 public class Butterfly extends AbstractButterfly {
 	
-	 public @Override TileState[][] learn() {
-		for (int i=0; i<100; i++) {
-			try{
-				 fly(danaus.Direction.E, danaus.Speed.NORMAL);
+	 public @Override TileState[][] learn() 
+	 {
+		try
+		{
+			fly_continuous(danaus.Direction.E, danaus.Speed.NORMAL);
+		}
+		catch (danaus.CliffCollisionException e) 
+		{
+			for (;;)
+			{
+				fly_continuous(danaus.Direction.S, danaus.Speed.NORMAL);
 			}
-			catch (danaus.CliffCollisionException e) {}
-			}
+		}
 		return null;
 	}
+	 
+	 /* ----------- Helper Methods ------------------------ */
+	 private void fly_continuous (Direction heading, Speed s)
+	 {
+		 for (;;)
+		 {
+			 fly(heading, s);
+		 }
+	 }
 	 
 	
 	public @Override void run(List<Long> flowerIds) {
