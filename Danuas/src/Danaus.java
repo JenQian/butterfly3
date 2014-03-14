@@ -1,7 +1,11 @@
+import danaus.TileState;
 
-public class Danaus {
 
-	public int hello(void)
+public class Danaus 
+{
+	public TileState[][] learn()
 	{
-		return 1;
+		return null;
 	}
+	
+}
