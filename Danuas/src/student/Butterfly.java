@@ -14,13 +14,13 @@ public class Butterfly extends AbstractButterfly
 	 {
 
 		fly_continuous(danaus.Speed.NORMAL);
-
+		
 		return null;
 
 	}
 	 
 	 /* ----------- Helper Methods ------------------------ */
-	 private void fly_continuous (Speed s)
+	 private TitleState[][] fly_continuous (Speed s)
 	 {
 		 for (;;)
 		 {
@@ -37,10 +37,17 @@ public class Butterfly extends AbstractButterfly
 			 		fly_continuous(danaus.Speed.NORMAL);
 			 	}
 			 	
+			 	
+			 	
+			 	
+			 	
 			 }
 			 /* For handling different cases when encountering a cliff */
 			 catch (danaus.CliffCollisionException e) 
 			 {
+				if (gety_position() == (getMapHeight()-1))
+					return new TileState[][];
+				
 				switch (getDirection())
 				{
 					case E:
@@ -60,6 +67,12 @@ public class Butterfly extends AbstractButterfly
 				}
 			 }
 		 }
+	 }
+	 
+	 /** check to see if the butterfly is near the end of the map and its flying */
+	 private void ending_cases()
+	 {
+		 
 	 }
 	 
 	 /** stores the location that the butterfly is currently on in its private
