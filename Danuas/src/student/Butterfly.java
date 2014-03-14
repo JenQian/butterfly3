@@ -28,6 +28,7 @@ public class Butterfly extends AbstractButterfly
 			 {
 			 	fly(getDirection(), s);
 			 	refreshState();
+			 	set_location();
 			 	
 			 	if ((getx_position() == getMapWidth()) || (getx_position() == 0))
 			 	{
