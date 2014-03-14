@@ -30,7 +30,8 @@ public class Butterfly extends AbstractButterfly
 			 	refreshState();
 			 	set_location();
 			 	
-			 	if ((getx_position() == getMapWidth()) || (getx_position() == 0))
+			 	if ((getx_position() == (getMapWidth()-1)) 
+			 	 || (getx_position() == 0))
 			 	{
 			 		setDirection(danaus.Direction.S);
 			 		fly_continuous(danaus.Speed.NORMAL);
@@ -61,26 +62,32 @@ public class Butterfly extends AbstractButterfly
 		 }
 	 }
 	 
-	 public void set_location()
+	 /** stores the location that the butterfly is currently on in its private
+	  *  variables  */
+	 private void set_location()
 	 {
 		 this.x_position = state.location.col;
 		 this.y_position = state.location.row;
 	 }
 	 
+	 /** @return the x position the butterfly is on */
 	 public int getx_position()
 	 {
 		 return x_position;
 	 }
 	 
+	 /** @return the y position the butterfly is on */
 	 public int gety_position()
 	 {
 		 return y_position;
 	 }
 	 
+	 /** @return the direction the butterfly is heading towards */
 	 public Direction getDirection() {
 		 return direction;
 	 }
 
+	 /** set the direction the butterfly is heading */
 	 public void setDirection(Direction direction) {
 		 this.direction = direction;
 	 }
