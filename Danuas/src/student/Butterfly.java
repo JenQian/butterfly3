@@ -1,164 +1,56 @@
-/** TIME SPENT: 20 hours and # minutes. */ 
+/** TIME SPENT: 30 hours and # minutes. */
 
 package student;
 import java.util.List;
 import danaus.*;
 
-public class Butterfly extends AbstractButterfly 
-{
-	private Direction direction = danaus.Direction.E;
-	private int x_position;
-	private int y_position;
-	public   TileState[][] M;
-	
-	 public @Override TileState[][] learn() 
-	 {
-        M= new TileState[getMapWidth()][getMapHeight()];
-		fly_continuous(danaus.Speed.NORMAL);
-		
-		return null;
-
+/**Butterfly is flying in boustrophedonic style. */
+public class Butterfly extends AbstractButterfly {
+	/**butterfly traverses the map in boustrophedonic fashion and contruct
+	 * a two-dimensional array of TileStates to represent the portion of map
+	 * that the butterfly explored */
+	 public @Override TileState[][] learn() {
+		//dir specifies the initial direction
+		 Direction dir = danaus.Direction.E;
+		//TileState represent the map that the butterfly explored 
+        TileState[][] M = new TileState[getMapHeight()][getMapWidth()];
+		while (true){
+			refreshState();
+			//update state to array(map)
+			M[state.location.row][state.location.col]=state;
+			try {
+				//special case for east or west edge
+				if ((state.location.col == getMapWidth()-1 && dir==Direction.E)
+						|| (state.location.col == 0 && dir== Direction.W)){
+					//stop if at the bottom row
+					if (state.location.row == getMapHeight()-1){
+						break;
+					}
+					fly(danaus.Direction.S, danaus.Speed.NORMAL);
+					dir= Direction.opposite(dir);
+				}
+				//default case
+				else{
+					fly(dir, danaus.Speed.NORMAL);
+				}				
+			}
+			catch(danaus.CliffCollisionException e) {
+			    //if the butterfly is at the bottom row and collides
+				if(state.location.row == getMapHeight()-1){
+					break;
+				}
+				//fly south for one tile
+		        fly(danaus.Direction.S, danaus.Speed.NORMAL);
+				dir= Direction.opposite(dir);		
+			}			
+		}		
+		return M;
 	}
 	 
-	 /* ----------- Helper Methods ------------------------ */
-
-	 /** Algorithm for the butterfly flying conditions according to the handout */
-	 private void fly_continuous (Speed s)
-	 // private TileState [][] fly_continuous (Speed s)
-	 {
-		 for (;;)
-		 {
-			 try
-			 {
-				/* Fly the butterfly, at every new tile, it would refresh the 
-				 * state and record the location of the butterfly in its private 
-				 * variables x_position, y_position */
-			 	fly(getDirection(), s);
-			 	refreshState();
-			 	set_location();
 			 	
-			 	/* When the butterfly hits the east edge it flies south one tile,
-			 	 * then it flies to the west */
-			 	if (getx_position() == (getMapWidth()-1)) 
-			 	{
-			 		setDirection(danaus.Direction.S);
-			 		fly(getDirection(), danaus.Speed.NORMAL);
-			 		setDirection(danaus.Direction.W);
-			 		fly_continuous(danaus.Speed.NORMAL);
-			 	}
-
-			 	/* When the butterfly hits the west edge it flies south one tile,
-			 	 * then it flies to the east */
-			 	if (getx_position() == 0)
-			 	{
-			 		setDirection(danaus.Direction.S);
-			 		fly(getDirection(), danaus.Speed.NORMAL);
-			 		setDirection(danaus.Direction.E);
-			 		fly_continuous(danaus.Speed.NORMAL);
-			 	}
-		 	
-			 /* When the butterfly hits the south end of the map, the program 
-			  * terminates */
-			 	if (ending_cases()==true){
-			 		return;
-			 	}
-
-			 	
-			 }
-			 /* For handling different cases when encountering a cliff */
-			 catch (danaus.CliffCollisionException e) 
-			 {
-				/* when the butterfly hits a cliff and its at the south edge of
-				 * the map it terminates the program */
-				 
-				 /*TODO: return new TileState[][], when the butterfly hits a cliff
-				  * and when its at the south edge of the map. This is a terminating
-				  * condition see pg3 of handout. terminating condition 3. 
-				  * so here the program should return a TitleState[][] with all the 
-				  * data that the butterfly traveled on. */
-				if (gety_position() == (getMapHeight()-1))
-					break;
-
-					//return new TileState[][];
-				
-				/* Handling collision with a cliff:
-				 * Case 1: butterfly flies EAST hits a cliff, it would turn SOUTH
-				 * 		   one tile then flies to the WEST
-				 * Case 2: butterfly flies SOUTH hits a cliff, it would turn WEST
-				 * Case 3: butterfly flies WEST hits a cliff, it would turn SOUTH 
-				 * 		   one tile then flies to the EAST */
-				switch (getDirection())
-				{
-					case E:
-						setDirection(danaus.Direction.S);
-						fly(getDirection(), danaus.Speed.NORMAL);
-						setDirection(danaus.Direction.W);
-						fly_continuous(danaus.Speed.NORMAL);
-					case S:
-						setDirection(danaus.Direction.W);
-						fly_continuous(danaus.Speed.NORMAL);
-					case W:
-						setDirection(danaus.Direction.S);
-						fly(getDirection(), danaus.Speed.NORMAL);
-						setDirection(danaus.Direction.W);
-						fly_continuous(danaus.Speed.NORMAL);
-						
-					default:
-						setDirection(danaus.Direction.E);
-						fly_continuous(danaus.Speed.NORMAL); 
-				
-				}
-			 }
-		 }
-	 }
+			
 	 
-	 private void set_explored_location() {
-		// M[getx_position()][gety_position()].location.col = getx_position();
-	 }
 	 
-	 /** check to see if the butterfly is near the end of the map and its flying */
-	 private boolean ending_cases()
-	 {
-		 
-		 if (gety_position() == getMapHeight()) {
-			 return true;
-		  }
-		 else{
-			 return false;
-		 }
-	 }
-	 
-	 /** stores the location that the butterfly is currently on in its private
-	  *  variables  */
-	 private void set_location()
-	 {
-		 this.x_position = state.location.col;
-		 this.y_position = state.location.row;
-	 }
-	 
-	 /** @return the x position the butterfly is on */
-	 public int getx_position()
-	 {
-		 return x_position;
-	 }
-	 
-	 /** @return the y position the butterfly is on */
-	 public int gety_position()
-	 {
-		 return y_position;
-	 }
-	 
-	 /** @return the direction the butterfly is heading towards */
-	 public Direction getDirection() 
-	 {
-		 return direction;
-	 }
-
-	 /** set the direction the butterfly is heading */
-	 public void setDirection(Direction direction) 
-	 {
-		 this.direction = direction;
-	 }
 	 
 	 /* ----------------------------------------------- */
 	

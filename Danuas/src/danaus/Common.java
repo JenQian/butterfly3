@@ -131,7 +131,7 @@ public class Common {
 	static boolean instadraw= false;
 	
     /** The inclusive lower bound of a randomly generated map height. */
-	static final int MIN_HEIGHT= 20;
+	static final int MIN_HEIGHT= 10;
 	/** The inclusive upper bound of a randomly generated map height. */
 	static final int MAX_HEIGHT= 40;
 	/** The lower bound on a randomly generated map width. */
@@ -210,7 +210,7 @@ public class Common {
 		
 		if (A3) {
 			LAND_FRACTION = 1;
-			CLIFF_SEED_PROBABILITY= 100;
+			CLIFF_SEED_PROBABILITY= 50;
 			FOREST_SEED_PROBABILITY= 0;
 		}
 		else {
