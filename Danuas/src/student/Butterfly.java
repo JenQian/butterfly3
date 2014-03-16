@@ -113,7 +113,7 @@ public class Butterfly extends AbstractButterfly
 	 }
 	 
 	 private void set_explored_location() {
-		 M[getx_position()][gety_position()].location.col = getx_position();
+		// M[getx_position()][gety_position()].location.col = getx_position();
 	 }
 	 
 	 /** check to see if the butterfly is near the end of the map and its flying */
