@@ -21,7 +21,7 @@ public class Butterfly extends AbstractButterfly
 	 
 	 /* ----------- Helper Methods ------------------------ */
 	 /** Algorithm for the butterfly flying conditions according to the handouts */
-	 private TitleState[][] fly_continuous (Speed s)
+	 private void fly_continuous (Speed s)
 	 {
 		 for (;;)
 		 {
@@ -34,17 +34,25 @@ public class Butterfly extends AbstractButterfly
 			 	refreshState();
 			 	set_location();
 			 	
-			 	/* When the butterfly hits the west edge or east edge of the map
-			 	 * it flies south */
-			 	if ((getx_position() == (getMapWidth()-1)) 
-			 	 || (getx_position() == 0))
+			 	/* When the butterfly hits the east edge it flies south one tile,
+			 	 * then it flies to the west */
+			 	if (getx_position() == (getMapWidth()-1)) 
 			 	{
 			 		setDirection(danaus.Direction.S);
+			 		fly(getDirection(), danaus.Speed.NORMAL);
+			 		setDirection(danaus.Direction.W);
 			 		fly_continuous(danaus.Speed.NORMAL);
 			 	}
-			 	
-			 	
-			 	
+			 	/* When the butterfly hits the west edge it flies south one tile,
+			 	 * then it flies to the east */
+			 	if (getx_position() == 0)
+			 	{
+			 		setDirection(danaus.Direction.S);
+			 		fly(getDirection(), danaus.Speed.NORMAL);
+			 		setDirection(danaus.Direction.E);
+			 		fly_continuous(danaus.Speed.NORMAL);
+			 	}
+			 
 			 	
 			 	
 			 }
@@ -60,22 +68,28 @@ public class Butterfly extends AbstractButterfly
 				  * so here the program should return a TitleState[][] with all the 
 				  * data that the butterfly traveled on. */
 				if (gety_position() == (getMapHeight()-1))
-					return new TileState[][];
+					break;
 				
 				/* Handling collision with a cliff:
 				 * Case 1: butterfly flies EAST hits a cliff, it would turn SOUTH
+				 * 		   one tile then flies to the WEST
 				 * Case 2: butterfly flies SOUTH hits a cliff, it would turn WEST
-				 * Case 3: butterfly flies WEST hits a cliff, it would turn SOUTH */
+				 * Case 3: butterfly flies WEST hits a cliff, it would turn SOUTH 
+				 * 		   one tile then flies to the EAST */
 				switch (getDirection())
 				{
 					case E:
 						setDirection(danaus.Direction.S);
+						fly(getDirection(), danaus.Speed.NORMAL);
+						setDirection(danaus.Direction.W);
 						fly_continuous(danaus.Speed.NORMAL);
 					case S:
 						setDirection(danaus.Direction.W);
 						fly_continuous(danaus.Speed.NORMAL);
 					case W:
 						setDirection(danaus.Direction.S);
+						fly(getDirection(), danaus.Speed.NORMAL);
+						setDirection(danaus.Direction.W);
 						fly_continuous(danaus.Speed.NORMAL);
 						
 					default:
