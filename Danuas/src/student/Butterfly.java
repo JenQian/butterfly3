@@ -1,4 +1,4 @@
-/** TIME SPENT: # hours and # minutes. */ 
+/** TIME SPENT: 20 hours and # minutes. */ 
 
 package student;
 import java.util.List;
@@ -9,10 +9,11 @@ public class Butterfly extends AbstractButterfly
 	private Direction direction = danaus.Direction.E;
 	private int x_position;
 	private int y_position;
+	public   TileState[][] M;
 	
 	 public @Override TileState[][] learn() 
 	 {
-
+        M= new TileState[getMapWidth()][getMapHeight()];
 		fly_continuous(danaus.Speed.NORMAL);
 		
 		return null;
@@ -20,8 +21,10 @@ public class Butterfly extends AbstractButterfly
 	}
 	 
 	 /* ----------- Helper Methods ------------------------ */
-	 /** Algorithm for the butterfly flying conditions according to the handouts */
+
+	 /** Algorithm for the butterfly flying conditions according to the handout */
 	 private void fly_continuous (Speed s)
+	 // private TileState [][] fly_continuous (Speed s)
 	 {
 		 for (;;)
 		 {
@@ -43,6 +46,7 @@ public class Butterfly extends AbstractButterfly
 			 		setDirection(danaus.Direction.W);
 			 		fly_continuous(danaus.Speed.NORMAL);
 			 	}
+
 			 	/* When the butterfly hits the west edge it flies south one tile,
 			 	 * then it flies to the east */
 			 	if (getx_position() == 0)
@@ -52,8 +56,13 @@ public class Butterfly extends AbstractButterfly
 			 		setDirection(danaus.Direction.E);
 			 		fly_continuous(danaus.Speed.NORMAL);
 			 	}
-			 
-			 	
+		 	
+			 /* When the butterfly hits the south end of the map, the program 
+			  * terminates */
+			 	if (ending_cases()==true){
+			 		return;
+			 	}
+
 			 	
 			 }
 			 /* For handling different cases when encountering a cliff */
@@ -69,6 +78,8 @@ public class Butterfly extends AbstractButterfly
 				  * data that the butterfly traveled on. */
 				if (gety_position() == (getMapHeight()-1))
 					break;
+
+					//return new TileState[][];
 				
 				/* Handling collision with a cliff:
 				 * Case 1: butterfly flies EAST hits a cliff, it would turn SOUTH
@@ -101,10 +112,20 @@ public class Butterfly extends AbstractButterfly
 		 }
 	 }
 	 
+	 private void set_explored_location() {
+		 M[getx_position()][gety_position()].location.col = getx_position();
+	 }
+	 
 	 /** check to see if the butterfly is near the end of the map and its flying */
-	 private void ending_cases()
+	 private boolean ending_cases()
 	 {
 		 
+		 if (gety_position() == getMapHeight()) {
+			 return true;
+		  }
+		 else{
+			 return false;
+		 }
 	 }
 	 
 	 /** stores the location that the butterfly is currently on in its private
