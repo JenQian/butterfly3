@@ -13,7 +13,7 @@ public class Butterfly extends AbstractButterfly
 	
 	 public @Override TileState[][] learn() 
 	 {
-        M= new TileState[getMapWidth()][getMapHeight()];
+        M = new TileState[getMapWidth()][getMapHeight()];
 		fly_continuous(danaus.Speed.NORMAL);
 		
 		return null;
@@ -68,6 +68,27 @@ public class Butterfly extends AbstractButterfly
 			 /* For handling different cases when encountering a cliff */
 			 catch (danaus.CliffCollisionException e) 
 			 {
+				 /* the case when the butterfly is on the west edge of the map
+				  * going south and hits a cliff, it will fly east */
+				 if ((getx_position() == 0) 
+					&& (getDirection() == danaus.Direction.S))
+				 {
+					 setDirection(danaus.Direction.E);
+					 fly_continuous(danaus.Speed.NORMAL);
+				 }
+				 
+				 /* the case when the butterfly is on the west edge of the map
+				  * going east and hits a cliff, it will fly south one tile,
+				  * then try to fly east again */
+				 if ((getx_position() == 0) 
+					&& (getDirection() == danaus.Direction.E))
+				 {
+					 setDirection(danaus.Direction.S);
+					 fly(getDirection(), danaus.Speed.NORMAL);
+					 setDirection(danaus.Direction.E);
+					 fly_continuous(danaus.Speed.NORMAL);
+				 }
+				 
 				/* when the butterfly hits a cliff and its at the south edge of
 				 * the map it terminates the program */
 				 
@@ -94,6 +115,8 @@ public class Butterfly extends AbstractButterfly
 						fly(getDirection(), danaus.Speed.NORMAL);
 						setDirection(danaus.Direction.W);
 						fly_continuous(danaus.Speed.NORMAL);
+					
+						
 					case S:
 						setDirection(danaus.Direction.W);
 						fly_continuous(danaus.Speed.NORMAL);
@@ -106,6 +129,7 @@ public class Butterfly extends AbstractButterfly
 					default:
 						setDirection(danaus.Direction.E);
 						fly_continuous(danaus.Speed.NORMAL); 
+						
 				
 				}
 			 }
@@ -113,7 +137,8 @@ public class Butterfly extends AbstractButterfly
 	 }
 	 
 	 private void set_explored_location() {
-		 M[getx_position()][gety_position()].location.col = getx_position();
+		 M[getx_position()][gety_position()].location 
+		  = new Location(getx_position(), gety_position());
 	 }
 	 
 	 /** check to see if the butterfly is near the end of the map and its flying */
